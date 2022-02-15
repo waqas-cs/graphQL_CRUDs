@@ -28,8 +28,8 @@ const typeDefs = gql`
     car: Car!
   }
   type Query {
-    #persons(year: String): [Person]
-    persons: [Person]
+    persons(year: String): [Person]
+    #persons: [Person]
   }
 `;
 
@@ -88,9 +88,9 @@ const persons = [
 const resolvers = {
   Query: {
     books: () => books,
-    // persons: (_, { year }) =>
-    //   persons.filter((person) => person.car.year == year),
-    persons: () => persons,
+    persons: (_, { year }) =>
+      persons.filter((person) => person.car.year == year),
+    //persons: () => persons,
   },
 };
 
