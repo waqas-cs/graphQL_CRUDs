@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-pascal-case */
 import React from "react";
 import { useQuery, gql, NetworkStatus } from "@apollo/client";
-import UseLazy_Query from "../components/useLazy_Query";
+//import UseLazy_Query from "../../components/useLazy_Query";
 
 interface personProps {
   persons: {
@@ -37,8 +37,8 @@ function Person(props: propsPerson) {
     useQuery<personProps>(GET_PERSON, {
       variables: { selectedYear },
       //pollInterval: 1000,
-      notifyOnNetworkStatusChange: true,
-      fetchPolicy: "network-only",
+      notifyOnNetworkStatusChange: false,
+      fetchPolicy: "no-cache",
     });
 
   if (networkStatus === NetworkStatus.refetch) return <p>"Refetching!"</p>;

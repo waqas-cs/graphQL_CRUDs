@@ -26,6 +26,9 @@ function App() {
               <li>
                 <Link to="/book">Books</Link>
               </li>
+              <li>
+                <Link to="/mutation">mutation</Link>
+              </li>
             </ul>
           </nav>
 
