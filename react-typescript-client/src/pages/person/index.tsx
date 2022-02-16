@@ -3,7 +3,7 @@ import React from "react";
 import { useQuery, gql, NetworkStatus } from "@apollo/client";
 //import UseLazy_Query from "../../components/useLazy_Query";
 
-interface personProps {
+export interface personProps {
   persons: {
     name: string;
     email: string;

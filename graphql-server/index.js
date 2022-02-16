@@ -31,8 +31,31 @@ const typeDefs = gql`
     persons(year: String): [Person]
     #persons: [Person]
   }
-`;
 
+  type Mutation {
+    addPerson(
+      id: Int!
+      name: String
+      email: String
+      year: Int
+      make: String
+      model: String
+    ): Person!
+  }
+  mutation {
+    addPerson(
+      id: 4
+      name: "ishaq"
+      email: "ishaq@gmail.com"
+      year: 2017
+      make: "MG"
+      model: "HS"
+    ) {
+      id
+      name
+    }
+  }
+`;
 const books = [
   {
     title: "The Awakening",
@@ -91,6 +114,24 @@ const resolvers = {
     persons: (_, { year }) =>
       persons.filter((person) => person.car.year == year),
     //persons: () => persons,
+  },
+  Mutation: {
+    addPerson: (root, args) => {
+      const { id, name, email, year, make, model } = args;
+      const newUser = {
+        id,
+        name,
+        email,
+        car: {
+          year,
+          model,
+          make,
+        },
+      };
+      persons.push(newUser);
+      console.log(persons);
+      return newUser;
+    },
   },
 };
 

@@ -21,6 +21,7 @@ const Book: React.FC = () => {
       }
     }
   `;
+
   const { loading, error, data } = useQuery<dataProps>(GET_PERSON);
 
   if (loading) return <p>Loading...</p>;

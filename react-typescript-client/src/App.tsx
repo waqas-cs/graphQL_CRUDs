@@ -4,6 +4,7 @@ import Book from "./pages/book";
 import Person from "./pages/person";
 import Home from "./pages/home";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import Mutation from "./pages/mutation";
 
 function App() {
   const [year, setYear] = useState("");
@@ -38,6 +39,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/person" element={<Person year={year} />} />
             <Route path="/book" element={<Book />} />
+            <Route path="/mutation" element={<Mutation />} />
           </Routes>
         </div>
       </Router>
