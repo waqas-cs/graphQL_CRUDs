@@ -1,19 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
 import Book from "./pages/book";
 import Person from "./pages/person";
 import Home from "./pages/home";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-import Mutation from "./pages/mutation";
 
 function App() {
-  const [year, setYear] = useState("");
-  const inputRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+  // const [year, setYear] = useState("");
+  // const inputRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
 
   return (
     <>
-      <input type="text" ref={inputRef} />
-      <button onClick={() => setYear(inputRef.current.value)}>submit</button>
+      {/* <input type="text" ref={inputRef} />
+      <button onClick={() => setYear(inputRef.current.value)}>submit</button> */}
       <Router>
         <div>
           <nav>
@@ -27,9 +26,9 @@ function App() {
               <li>
                 <Link to="/book">Books</Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/mutation">mutation</Link>
-              </li>
+              </li> */}
             </ul>
           </nav>
 
@@ -37,9 +36,10 @@ function App() {
             renders the first one that matches the current URL. */}
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/person" element={<Person year={year} />} />
+            {/* <Route path="/person" element={<Person year={year} />} /> */}
+            <Route path="/person" element={<Person />} />
             <Route path="/book" element={<Book />} />
-            <Route path="/mutation" element={<Mutation />} />
+            {/* <Route path="/mutation" element={<Mutation />} /> */}
           </Routes>
         </div>
       </Router>

@@ -28,8 +28,8 @@ const typeDefs = gql`
     car: Car!
   }
   type Query {
-    persons(year: String): [Person]
-    #persons: [Person]
+    #persons(year: String): [Person]
+    persons: [Person]
   }
 
   type Mutation {
@@ -44,13 +44,22 @@ const typeDefs = gql`
   }
   mutation {
     addPerson(
-      id: 4
-      name: "ishaq"
-      email: "ishaq@gmail.com"
-      year: 2017
-      make: "MG"
-      model: "HS"
+      id: $id
+      name: $name
+      email: $email
+      year: $year
+      make: $make
+      model: $model
     ) {
+      id
+      name
+    }
+  }
+  type Mutation {
+    deletePerson(id: Int!): [Person]!
+  }
+  mutation {
+    deletePerson(id: $id) {
       id
       name
     }
@@ -73,9 +82,9 @@ const books = [
   },
 ];
 
-const persons = [
+let persons = [
   {
-    id: "1",
+    id: 1,
     name: "john",
     email: "john@gmail.com",
     car: {
@@ -85,9 +94,9 @@ const persons = [
     },
   },
   {
-    id: "2",
+    id: 2,
     name: "khan",
-    email: "john@gmail.com",
+    email: "khan@gmail.com",
     car: {
       year: 2017,
       make: "toyota",
@@ -95,13 +104,23 @@ const persons = [
     },
   },
   {
-    id: "3",
+    id: 3,
     name: "ali",
-    email: "john@gmail.com",
+    email: "ali@gmail.com",
     car: {
       year: 2022,
       make: "audi",
       model: "A6",
+    },
+  },
+  {
+    id: 4,
+    name: "umar",
+    email: "umar@gmail.com",
+    car: {
+      year: 2021,
+      make: "honda",
+      model: "vezel",
     },
   },
 ];
@@ -111,9 +130,9 @@ const persons = [
 const resolvers = {
   Query: {
     books: () => books,
-    persons: (_, { year }) =>
-      persons.filter((person) => person.car.year == year),
-    //persons: () => persons,
+    // persons: (_, { year }) =>
+    //   persons.filter((person) => person.car.year == year),
+    persons: () => persons,
   },
   Mutation: {
     addPerson: (root, args) => {
@@ -131,6 +150,11 @@ const resolvers = {
       persons.push(newUser);
       console.log(persons);
       return newUser;
+    },
+    deletePerson: (root, args) => {
+      const { id } = args;
+      persons = persons.filter((element) => element.id !== id);
+      return persons;
     },
   },
 };

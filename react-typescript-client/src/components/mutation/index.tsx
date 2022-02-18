@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
-import { personProps } from "../person/index";
+import { personProps } from "../../pages/person/index";
 const ADD_PERSON = gql`
   mutation AddPerson(
     $id: Int!
@@ -29,14 +29,16 @@ const ADD_PERSON = gql`
     }
   }
 `;
-
 interface carData {
   year: string;
   make: string;
   model: string;
 }
+interface propsMutation {
+  refetch: () => any;
+}
 
-const Mutation: React.FC = () => {
+function Mutation(props: propsMutation) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [car, setCar] = useState<carData>({
@@ -68,6 +70,8 @@ const Mutation: React.FC = () => {
               model: car.model,
             },
           });
+          const refetch = props.refetch;
+          refetch();
         }}
       >
         <input
@@ -112,6 +116,6 @@ const Mutation: React.FC = () => {
       </form>
     </div>
   );
-};
+}
 
 export default Mutation;
