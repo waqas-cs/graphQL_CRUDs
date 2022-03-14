@@ -64,6 +64,41 @@ const typeDefs = gql`
       name
     }
   }
+  type Mutation {
+    updatePerson(
+      id: Int!
+      name: String
+      email: String
+      year: Int
+      make: String
+      model: String
+    ): Person!
+  }
+  mutation (
+    $id: Int!
+    $name: String
+    $email: String
+    $year: Int
+    $make: String
+    $model: String
+  ) {
+    updatePerson(
+      id: $updatePersonId
+      name: $name
+      email: $email
+      year: $year
+      make: $make
+      model: $model
+    ) {
+      id
+      name
+      car {
+        year
+        make
+        model
+      }
+    }
+  }
 `;
 const books = [
   {
@@ -155,6 +190,28 @@ const resolvers = {
       const { id } = args;
       persons = persons.filter((element) => element.id !== id);
       return persons;
+    },
+    updatePerson: (root, args) => {
+      const { id, name, email, year, make, model } = args;
+      console.log("at backend update id", typeof id);
+      const newUser = {
+        id,
+        name,
+        email,
+        car: {
+          year,
+          model,
+          make,
+        },
+      };
+      persons = persons.map((element) => {
+        if (element.id == id) {
+          return (element = newUser);
+        }
+        return element;
+      });
+      console.log(persons);
+      return newUser;
     },
   },
 };

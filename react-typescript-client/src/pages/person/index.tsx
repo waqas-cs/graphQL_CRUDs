@@ -69,6 +69,35 @@ const DELETE_PERSON = gql`
   }
 `;
 
+const UPDATE_PERSON = gql`
+  mutation updatePerson(
+    $id: Int!
+    $name: String!
+    $email: String!
+    $year: Int!
+    $make: String!
+    $model: String!
+  ) {
+    updatePerson(
+      id: $id
+      name: $name
+      email: $email
+      year: $year
+      make: $make
+      model: $model
+    ) {
+      id
+      name
+      email
+      car {
+        year
+        make
+        model
+      }
+    }
+  }
+`;
+
 interface carData {
   year: string;
   make: string;
@@ -98,6 +127,8 @@ function Person() {
     { data: addPersonData, loading: addPersonLoading, error: addPersonError },
   ] = useMutation<personProps>(ADD_PERSON);
 
+  const [updatePerson] = useMutation<personProps>(UPDATE_PERSON);
+
   const [deletePerson] = useMutation<personProps>(DELETE_PERSON);
 
   const handleCarDetailsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,6 +143,50 @@ function Person() {
   if (getQueryLoading) return <p>Loading...</p>;
   if (getQueryError) return <p>Error :(</p>;
 
+  const updatePersonHandler = () => {
+    const year = Number(car.year);
+    console.log("at update section", typeof selectedId);
+    updatePerson({
+      variables: {
+        id: selectedId,
+        name: name,
+        email: email,
+        year: year,
+        make: car.make,
+        model: car.model,
+      },
+    });
+    setSelectedId(0);
+    setUpdateButton(false);
+    setName("");
+    setEmail("");
+    const newCar = {
+      year: "",
+      make: "",
+      model: "",
+    };
+    setCar(newCar);
+    refetch();
+    return;
+  };
+
+  const addPersonHandler = () => {
+    const personId = Math.floor(Math.random() * 1000000000);
+    const year = Number(car.year);
+    console.log("at add section");
+    addPerson({
+      variables: {
+        id: personId,
+        name: name,
+        email: email,
+        year: year,
+        make: car.make,
+        model: car.model,
+      },
+    });
+    refetch();
+  };
+
   const editHandler = (
     editId: number,
     editName: string,
@@ -125,11 +200,13 @@ function Person() {
       make: editMake,
       model: editModel,
     };
+    editId = Number(editId);
     setSelectedId(editId);
     setName(editName);
     setEmail(editEmail);
     setCar(newCar);
     setUpdateButton(true);
+    console.log("selected id is = ", selectedId);
   };
 
   return (
@@ -139,19 +216,11 @@ function Person() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            const year = Number(car.year);
-            const personId = Math.floor(Math.random() * 1000000000);
-            addPerson({
-              variables: {
-                id: personId,
-                name: name,
-                email: email,
-                year: year,
-                make: car.make,
-                model: car.model,
-              },
-            });
-            refetch();
+            if (selectedId) {
+              updatePersonHandler();
+            } else {
+              addPersonHandler();
+            }
           }}
         >
           <input
